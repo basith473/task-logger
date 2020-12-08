@@ -1,96 +1,97 @@
 <template>
-    <lightning-card>
+    <div class="spinner">
         <template if:true={isLoading}>
-            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
         </template>
-        <template if:false={isLoading}>
-            <div class="slds-grid slds-wrap">
-                <div class="slds-col slds-size_4-of-12 slds-p-around_small">
-                    <c-new-custom-lookup icon-name="standard:user" object-api-name="User" label="Login User Name"
-                        fields="Id,Name" search-field="Name" onrecordselected={lookupSelected}></c-new-custom-lookup>
-                </div>
-                <div class="slds-col slds-size_4-of-12 slds-p-around_small">
-                    <c-new-custom-lookup icon-name="standard:user" object-api-name="User" label="Login User Email"
-                        fields="Id,Email" search-field="Email" onrecordselected={lookupSelected}>
-                    </c-new-custom-lookup>
-                </div>
-                <div class="slds-col slds-size_4-of-12 slds-p-around_small">
-                    Company Logo
-                </div>
-                <div class="slds-col slds-size_4-of-12">
-                    <div class="slds-grid">
-                        <div class="slds-col slds-size_2-of-4 slds-p-around_small">
-                            <lightning-input type="date" name="fromDate" label="From Date" onchange={handleDateChange}>
-                            </lightning-input>
-                        </div>
-                        <div class="slds-col slds-size_2-of-4 slds-p-around_small">
-                            <lightning-input type="date" name="toDate" label="To Date" onchange={handleDateChange}>
-                            </lightning-input>
-                        </div>
+    </div>
+    <lightning-card>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_4-of-12 slds-p-around_small">
+                <c-new-custom-lookup icon-name="standard:user" object-api-name="User" label="Login User Name"
+                    fields="Id,Name" search-field="Name" onrecordselected={lookupSelected}></c-new-custom-lookup>
+            </div>
+            <div class="slds-col slds-size_4-of-12 slds-p-around_small">
+                <c-new-custom-lookup icon-name="standard:user" object-api-name="User" label="Login User Email"
+                    fields="Id,Email" search-field="Email" onrecordselected={lookupSelected}>
+                </c-new-custom-lookup>
+            </div>
+            <div class="slds-col slds-size_4-of-12 slds-p-around_small">
+                Company Logo
+            </div>
+            <div class="slds-col slds-size_4-of-12">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_2-of-4 slds-p-around_small">
+                        <lightning-input type="date" name="fromDate" label="From Date" onchange={handleDateChange}
+                            required>
+                        </lightning-input>
                     </div>
-                </div>
-                <div class="slds-col slds-size_4-of-12 slds-p-around_small">
-                    <c-mutli-select-picklist picklistlabel="Project" values={values} onselect={handleMultiSelect}>
-                    </c-mutli-select-picklist>
-                </div>
-                <div class="slds-col slds-size_3-of-12 slds-p-around_small">
-                    <lightning-combobox name="role" label="Role" value={roleValue} placeholder="Select Role"
-                        options={roleValues} onchange={handleChange}></lightning-combobox>
+                    <div class="slds-col slds-size_2-of-4 slds-p-around_small">
+                        <lightning-input type="date" name="toDate" label="To Date" onchange={handleDateChange} required>
+                        </lightning-input>
+                    </div>
                 </div>
             </div>
-            <template if:true={displayTable}>
-                <div class="slds-p-horizontal_large">
-                    <div class="slds-box">
-                        <div class="slds-p-around_medium taskTable">
-                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
-                                <thead>
-                                    <tr class="slds-line-height_reset">
-                                        <template for:each={columns} for:item="col">
-                                            <th key={col} scope="col">
-                                                <span class="slds-align_absolute-center"> {col} </span>
-                                            </th>
-                                        </template>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <template for:each={days} for:item="day">
-                                        <tr key={day} class="tableDetails">
-                                            <td>
-                                                <span class="slds-align_absolute-center days"> {day} </span>
-                                            </td>
-                                            <td>
-                                                <div class="slds-col slds-align_absolute-center">
-                                                    <lightning-combobox name={day} placeholder="Select Task"
-                                                        options={taskValues} onchange={taskChanged}>
-                                                    </lightning-combobox>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="slds-col slds-align_absolute-center">
-                                                    <lightning-combobox name={day} placeholder="Select Hours"
-                                                        options={hourList} onchange={hoursChanged}></lightning-combobox>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <lightning-textarea name={day} label="Enter some text"
-                                                    onchange={descriptionChanged}>
-                                                </lightning-textarea>
-                                            </td>
-                                        </tr>
+            <div class="slds-col slds-size_4-of-12 slds-p-around_small">
+                <c-mutli-select-picklist picklistlabel="Project" values={values} onselect={handleMultiSelect}>
+                </c-mutli-select-picklist>
+            </div>
+            <div class="slds-col slds-size_3-of-12 slds-p-around_small">
+                <lightning-combobox name="role" label="Role" value={roleValue} placeholder="Select Role"
+                    options={roleValues} onchange={handleChange}></lightning-combobox>
+            </div>
+        </div>
+        <template if:true={displayTable}>
+            <div class="slds-p-horizontal_large">
+                <div class="slds-box">
+                    <div class="slds-p-around_medium taskTable">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <template for:each={columns} for:item="col">
+                                        <th key={col} scope="col">
+                                            <span class="slds-align_absolute-center"> {col} </span>
+                                        </th>
                                     </template>
-                                </tbody>
-                            </table>
-                        </div>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={days} for:item="day">
+                                    <tr key={day} class="tableDetails">
+                                        <td>
+                                            <span class="slds-align_absolute-center days"> {day} </span>
+                                        </td>
+                                        <td>
+                                            <div class="slds-col slds-align_absolute-center">
+                                                <lightning-combobox name={day} placeholder="Select Task"
+                                                    options={taskValues} onchange={taskChanged}>
+                                                </lightning-combobox>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-col slds-align_absolute-center">
+                                                <lightning-combobox name={day} placeholder="Select Hours"
+                                                    options={hourList} onchange={hoursChanged}></lightning-combobox>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <lightning-textarea name={day} label="Enter some text"
+                                                onchange={descriptionChanged}>
+                                            </lightning-textarea>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="button-container slds-p-top_medium slds-align_absolute-center">
-                    <lightning-button variant="brand" label="Save" title="Save Task" onclick={handleSave}
-                        class="slds-m-left_x-small"></lightning-button>
-                    <lightning-button variant="brand" label="Cancel" title="Cancel Task" onclick={handleCancel}
-                        class="slds-m-left_x-small">
-                    </lightning-button>
-                </div>
-            </template>
+            </div>
+            <div class="button-container slds-p-top_medium slds-align_absolute-center">
+                <lightning-button variant="brand" label="Save" title="Save Task" onclick={handleSave}
+                    class="slds-m-left_x-small"></lightning-button>
+                <lightning-button variant="brand" label="Cancel" title="Cancel Task" onclick={handleCancel}
+                    class="slds-m-left_x-small">
+                </lightning-button>
+            </div>
         </template>
     </lightning-card>
 </template>

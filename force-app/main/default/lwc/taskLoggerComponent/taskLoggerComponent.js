@@ -1,5 +1,6 @@
 import { LightningElement, track } from 'lwc';
 import  taskSave from '@salesforce/apex/customLookUpController.taskSave';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class TaskLoggerComponent extends LightningElement {
     @track roleValue;
@@ -38,9 +39,6 @@ export default class TaskLoggerComponent extends LightningElement {
                 //
                 let strMin = mins === 0 ? '00' : '50';
                 let str = String(hour) + ':' + strMin;
-                console.log('Hours -- ' + hour);
-                console.log('Min -- ' + mins);
-                console.log(str);
                 this.hourList.push({ label: str, value: str });
             }
         }
@@ -51,7 +49,6 @@ export default class TaskLoggerComponent extends LightningElement {
     }
 
     handleDateChange(event) {
-        console.log(event);
         if (event.target.name === 'fromDate') {
             this.fromDate = event.target.value;
         } else {
@@ -66,11 +63,8 @@ export default class TaskLoggerComponent extends LightningElement {
     }
 
     handleMultiSelect(event) {
-        console.log('handling multi select');
-        console.log(event);
         let values = event.detail;
         this.projectSelected = values;
-        console.log('after event : ' + this.projectSelected);
         if (this.toDate && this.fromDate && this.projectSelected.length > 0) {
             this.displayTable = true;
         } else {
@@ -93,9 +87,21 @@ export default class TaskLoggerComponent extends LightningElement {
             taskDetails: JSON.stringify(this.tableData)
         }
         taskSave(searchParams)
-        .then(result => console.log(result))
+        .then(result =>{
+            console.log(result);
+            this.isLoading = false;
+            this.showNotification();
+        })
         .catch(error => console.log(error))
-        this.isLoading = false;
+    }
+
+    showNotification() {
+        const evt = new ShowToastEvent({
+            title: 'Success',
+            message: 'Record Saved Successfully',
+            variant: 'success',
+        });
+        this.dispatchEvent(evt);
     }
 
     lookupSelected(event) {
